@@ -39,12 +39,11 @@ def group_responses(csv_df):
     complete_forms = [] 
 
     # wir iterieren über die Gruppen
-    # mit jedem Durchlauf bauen wir für eine Antwortzeile ein Dictionary
     for (id_patient, questionnaire_title, answer_day), group in groups:
-
         answers = []
         # wir iterieren über die Zeilen der Gruppe, um die Antworten zu sammeln
         # iterrows gibt uns zeilen zurück
+        # mit jedem Durchlauf bauen wir für eine Antwortzeile ein Dictionary
         for index, row in group.iterrows():
             answer = {
                 "question": row["questionnaire_question"],
