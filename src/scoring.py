@@ -35,10 +35,10 @@ pgsgaMainQuestions = [
 ]
 
 # die pgsga Fragen, die den Punkt nur im Fragebogen, aber nicht in d. csv datei haben
-pgsgaOptionalQuestions = [
-	"Wenn Schmerzen, wo?",
-	"Wenn Sonstiges, was?"
-] 
+pgsgaOptionalQuestions = {
+	"Wenn Schmerzen, wo?" : 3,
+	"Wenn Sonstiges, was?" : 1
+} 
 
 omdqMainQuestions = [
 	"1. Wie würden Sie Ihre allgemeine Befindlichkeit in den letzten 24 Stunden einschätzen?",
@@ -74,20 +74,38 @@ def uebelkeitScoreCalculator(session):
 
 # Facit Score Funktion:
 def facitScoreCalculator(session):
-	amountAnsweredQuestions = session["answers"].len()
-	sum = 0
-	for a in session["answers"]:
-		if a in facitCalcQuestions:
-			sum = sum + 4 - a["value"]
-		elif a in facitDirectQuestions:
-			sum = sum + a["value"]
+	if session["questionnaire_title"] == "FACIT-Erschöpfung":
 
-	if amountAnsweredQuestions < 13:
-		sum = (sum * 13)/amountAnsweredQuestions
+		amountAnsweredQuestions = 0
+		sum = 0
+		for a in session["answers"]:
+			if a["question_title"] in facitCalcQuestions:
+				sum = sum + 4 - int(a["value"]) #konvertieren string zu int
+				amountAnsweredQuestions = amountAnsweredQuestions + 1
+			elif a["question_title"] in facitDirectQuestions:
+				sum = sum + int(a["value"])
+				amountAnsweredQuestions = amountAnsweredQuestions + 1
 
-	return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":sum}
+		if amountAnsweredQuestions < 13:
+			sum = (sum * 13)/amountAnsweredQuestions
+
+		return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":sum}
+	return None
+	
 
 
 # PGSGA Score Funktion:
 def pgsgaScoreCalculator(session):
-	
+	if session["questionnaire_title"] == "PG-SGA SF | Patientenbezogenes Ernährungsassesment":
+		sum = 0
+		for a in session["answers"]:
+			if a["question_title"] == "Bei mir traten die folgenden Probleme auf, die mich in den vergangenen zwei Wochen davon abgehalten haben, ausreichend zu essen (alles Zutreffende ankreuzen):" and (a["value"]) == "true":
+				sum = sum + int(a["type"])
+			elif a["question_title"] in pgsgaMainQuestions: 
+				sum = sum + int(a["value"])
+			elif a["question_title"] in pgsgaOptionalQuestions and a["value"] != "keine" and a["value"] != "NULL":
+				sum = sum + pgsgaOptionalQuestions["question_title"]
+		return sum
+	return None
+
+
