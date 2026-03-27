@@ -7,8 +7,6 @@ facitCalcQuestions = [
 	"Ich bin müde.",
 	"Es fällt mir schwer, etwas anzufangen, weil ich müde bin.",
 	"Es fällt mir schwer, etwas zu Ende zu führen, weil ich müde bin.",
-	"Ich habe Energie.",
-	"Ich bin in der Lage meinen gewohnten Aktivitäten nachzugehen (Beruf, Einkaufen, Schule, Freizeit, Sport usw.).",
 	"Ich habe das Bedürfnis, tagsüber zu schlafen.",
 	"Ich bin zu müde, um zu essen.",
 	"Ich brauche Hilfe bei meinen gewohnten Aktivitäten (Beruf, Einkaufen, Schule, Freizeit, Sport usw.).",
@@ -40,13 +38,11 @@ pgsgaOptionalQuestions = {
 	"Wenn Sonstiges, was?" : 1
 } 
 
-omdqMainQuestions = [
-	"1. Wie würden Sie Ihre allgemeine Befindlichkeit in den letzten 24 Stunden einschätzen?",
-	"2. Wie stark waren Ihre Mund- und Rachenschmerzen in den letzten 24 Stunden?",
-	"4. Wie stark hatten Sie in den letzten 24 Stunden Durchfall?"
-]
+omdqQuestionOne = "1. Wie würden Sie Ihre allgemeine Befindlichkeit in den letzten 24 Stunden einschätzen?"
+omdqQuestionTwo = "2. Wie stark waren Ihre Mund- und Rachenschmerzen in den letzten 24 Stunden?"
+omdqQuestionFour = "4. Wie stark hatten Sie in den letzten 24 Stunden Durchfall?"
 
-omdqOptionalQuestions = ["3. Wie stark schränkte Sie der Mund- und Rachenschmerz in den letzten 24 Stunden bei den folgenden Tätigkeiten ein?"]
+omdqQuestionThree = "3. Wie stark schränkte Sie der Mund- und Rachenschmerz in den letzten 24 Stunden bei den folgenden Tätigkeiten ein?"
 
 
 # Die Oberfunktion berrechnet für jede Session einen Score, pflegt für jeden Patienten eine scoreliste für jeden Fragebogen (Datum dabei), dabei wird beachtet, dass maximal GraphPunkteAnzahl scores in der Liste sein dürfen
@@ -86,8 +82,9 @@ def facitScoreCalculator(session):
 				sum = sum + int(a["value"])
 				amountAnsweredQuestions = amountAnsweredQuestions + 1
 
-		if amountAnsweredQuestions < 13:
-			sum = (sum * 13)/amountAnsweredQuestions
+		if (amountAnsweredQuestions > 0) and (amountAnsweredQuestions < 13):
+			sum = (sum * 13) / amountAnsweredQuestions
+			sum = round(sum, 2)
 
 		return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":sum}
 	return None
@@ -104,8 +101,65 @@ def pgsgaScoreCalculator(session):
 			elif a["question_title"] in pgsgaMainQuestions: 
 				sum = sum + int(a["value"])
 			elif a["question_title"] in pgsgaOptionalQuestions and a["value"] != "keine" and a["value"] != "NULL":
-				sum = sum + pgsgaOptionalQuestions["question_title"]
-		return sum
+				sum = sum + pgsgaOptionalQuestions[a["question_title"]]
+		return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":sum}
+	return None
+
+# OMDQ Score Funktion:
+def omdqScoreCalculator(session):
+	if session["questionnaire_title"] == "OMDQ":
+		sum = 0
+		amountAnsweredQuestions = 0
+
+		for a in session["answers"]:
+			if a["question_title"] == omdqQuestionOne:
+				sum = sum + int(a["value"])
+				amountAnsweredQuestions = amountAnsweredQuestions + 1
+			elif a["question_title"] == omdqQuestionTwo:
+				amountAnsweredQuestions = amountAnsweredQuestions + 1
+				if a["value"] == "keineSchmerzen":
+					sum = sum + 0
+				elif a["value"] == "einWenigSchmerzen":
+					sum = sum + 1
+				elif a["value"] == "massigeSchmerzen":
+					sum = sum + 2
+				elif a["value"] == "starkeSchmerzen":
+					sum = sum + 3
+				elif a["value"] == "extremeSchmerzen":
+					sum = sum + 4
+			elif a["question_title"] == omdqQuestionThree:
+				amountAnsweredQuestions = amountAnsweredQuestions + 1
+				if a["value"] == "keineEinschrankung":
+					sum = sum + 0
+				elif a["value"] == "leichteEinschrankung":
+					sum = sum + 1
+				elif a["value"] == "massigeEinschrankung":
+					sum = sum + 2
+				elif a["value"] == "starkeEinschrankung":
+					sum = sum + 3
+				elif a["value"] == "nichtMoglich":
+					sum = sum + 4
+			elif a["question_title"] == omdqQuestionFour:
+				amountAnsweredQuestions = amountAnsweredQuestions + 1
+				if a["value"] == "keinDurchfall":
+					sum = sum + 0
+				elif a["value"] == "einWenigDurchfall":
+					sum = sum + 1
+				elif a["value"] == "mssigerDurchfall":
+					sum = sum + 2
+				elif a["value"] == "starkerDurchfall":
+					sum = sum + 3
+				elif a["value"] == "extremerDurchfall":
+					sum = sum + 4
+
+		if sum != 0:
+			sum = sum / amountAnsweredQuestions
+			sum = round(sum, 2)
+			return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":sum}
+	
 	return None
 
 
+
+def mainScoreCalculator(alleAntworten):
+	
