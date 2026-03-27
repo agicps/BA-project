@@ -1,4 +1,6 @@
-FACIT_ALL_ITEMS = {
+# Facit Fragen
+# hier Set gut, weil wir oft einfach einfach nur prüfen
+facitCalcQuestions = [
 	"Ich bin erschöpft.",
 	"Ich fühle mich insgesamt schwach.",
 	"Ich fühle mich lustlos (ausgelaugt).",
@@ -12,71 +14,41 @@ FACIT_ALL_ITEMS = {
 	"Ich brauche Hilfe bei meinen gewohnten Aktivitäten (Beruf, Einkaufen, Schule, Freizeit, Sport usw.).",
 	"Ich bin frustriert, weil ich zu müde bin, die Dinge zu tun, die ich machen möchte.",
 	"Ich musste meine sozialen Aktivitäten einschränken, weil ich müde bin.",
-}
+]
 
-
-FACIT_DIRECT_ITEMS = {
+# hier bei diesen Fragen wird nichts extra aufsummiert
+facitDirectQuestions = [
 	"Ich habe Energie.",
 	"Ich bin in der Lage meinen gewohnten Aktivitäten nachzugehen (Beruf, Einkaufen, Schule, Freizeit, Sport usw.).",
-}
+]
+
+# Übelkeit & Erbrechen Fragen
+uebelkeitQuestions = ["Häufigkeit: Wie häufig müssen Sie am Tag erbrechen?"]
+
+# PG-SGA SF Fragen
+pgsgaMainQuestions = [
+	"In den vergangenen zwei Wochen hat sich mein Gewicht:",
+	"Im Vergleich zu meiner normalen Nahrungsaufnahme würde ich diese im vergangenen Monat wie folgt bewerten:",
+	"Derzeit nehme ich folgende Nahrung auf:",
+	"Mein Aktivitätsniveau in den letzten vier  Wochen würde ich allgemein wie folgt bewerten:",
+	"Bei mir traten die folgenden Probleme auf, die mich in den vergangenen zwei Wochen davon abgehalten haben, ausreichend zu essen (alles Zutreffende ankreuzen):"
+]
+
+# die pgsga Fragen, die den Punkt nur im Fragebogen, aber nicht in d. csv datei haben
+pgsgaOptionalQuestions = [
+	"Wenn Schmerzen, wo?",
+	"Wenn Sonstiges, was?"
+] 
+
+omdqMainQuestions = [
+	"1. Wie würden Sie Ihre allgemeine Befindlichkeit in den letzten 24 Stunden einschätzen?",
+	"2. Wie stark waren Ihre Mund- und Rachenschmerzen in den letzten 24 Stunden?",
+	"4. Wie stark hatten Sie in den letzten 24 Stunden Durchfall?"
+]
+
+omdqOptionalQuestions = ["3. Wie stark schränkte Sie der Mund- und Rachenschmerz in den letzten 24 Stunden bei den folgenden Tätigkeiten ein?"]
 
 
-def calculate_facit_score(group, facit_title):
-	if group["questionnaire_title"] != facit_title:
-		return None
-
-	item_score_sum = 0
-	answered_count = 0
-
-	for answer in group["answers"]:
-		question = answer.get("question")
-		if question not in FACIT_ALL_ITEMS:
-			continue
-
-		try:
-			value = int(answer.get("value"))
-		except (TypeError, ValueError):
-			continue
-
-		if value < 0 or value > 4:
-			continue
-
-		if question in FACIT_DIRECT_ITEMS:
-			item_score = value
-		else:
-			item_score = 4 - value
-
-		item_score_sum += item_score
-		answered_count += 1
-
-	if answered_count == 0:
-		return None
-
-	if answered_count < 13:
-		score = item_score_sum * 13 / answered_count
-	else:
-		score = item_score_sum
-
-	return {
-		"date": group["date"],
-		"score": score,
-	}
 
 
-def build_facit_patient_scores(groups, facit_title):
-	patient_scores = {}
 
-	for group in groups:
-		facit_score = calculate_facit_score(group, facit_title)
-		if facit_score is None:
-			continue
-
-		patient_id = group["id_patient"]
-		patient_scores.setdefault(patient_id, {}).setdefault(facit_title, []).append(
-			facit_score
-		)
-
-	for patient_id in patient_scores:
-		patient_scores[patient_id][facit_title].sort(key=lambda entry: entry["date"])
-
-	return patient_scores

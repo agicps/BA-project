@@ -14,13 +14,13 @@ import pandas as pd
 # d.h. nur relevante Fragebögen, und Zeilen die NOT_STARTED oder IN_PROGRESS sind raus
 # csv ist in Form eines DataFrames, relevant_questionnaires ist eine Liste
 #
-def filter_relevant_rows(csv_df, relevant_questionnaires):
-    filtered_csv_df = csv_df[
+def filter_relevante_zeilen(csv_df, relevant_questionnaires):
+    filtered_df = csv_df[
             csv_df["questionnaire_title"].isin(relevant_questionnaires)
             & ~csv_df["questionnaire_reply_status"].isin(["NOT_STARTED","IN_PROGRESS"])
     ].copy()
     # wir machen eine copy vom gefilterten DataFrame, weil das für pandas empfohlen wird
-    return filtered_csv_df
+    return filtered_df
 
 
 
@@ -29,7 +29,7 @@ def group_responses(csv_df):
 
     # wir gruppieren den dataframe nach Patient, Fragebogen und Tag
     groups = csv_df.groupby(["id_patient", "questionnaire_title", "answer_day"])
-    # mit groupby bekommt man den Gruppenschlüssel (id_patient, questionnaire_title, answer_day) 
+    # mit groupby bekommt man den Gruppenschlüssel also (id_patient, questionnaire_title, answer_day) 
     # und die zugehörige Teiltabelle(group) (also die Zeilen die zu diesem Schlüssel gehören)
 
     # hier speichern wir die fertigen Ausfüllungen

@@ -4,60 +4,52 @@ from pathlib import Path
 
 # Verzeichnisstruktur
     # generell ist die Struktur vom Projekt wie folgt:
-    # project/
-    # ├── data/
-    # │   └── export.csv
-    # ├── output/
-    # │   └── hier sind die generierten PDFs
-    # ├── src/
-    # │   ├── config.py # hier speichern wir alle Daten zum Konfigurieren der Anwendung
-    # │   ...
+    # - project
+    #    - ausgabe
+    #       - export.csv
+    #    - output
+    #       - hier sind die generierten PDFs
+    #    - src
+    #       - config.py # hier speichern wir alle Daten zum Konfigurieren der Anwendung
+    #       ...
 BASE_DIR = Path(__file__).parent.parent
-    # BASE_DIR ist der Pfad zum Verzeichnis, in dem das Projekt liegt
+    # BASIS_DIR ist der Pfad zum Verzeichnis, in dem das Projekt liegt
     # Path(__file__) gibt den Pfad von der aktuellen Datei (also config.py) zurück
     # .parent.parent geht zwei Ebenen hoch, d.h. zum Verzeichnis in dem das Projekt liegt
-DATA_DIR   = BASE_DIR / "data"
+DATEI_DIR   = BASE_DIR / "Exportdatei"
     # DATA_DIR ist der Pfad zum Verzeichnis, in dem die Daten liegen, d.h. die CSV-Datei die wir verarbeiten
     # wir gehen aus dem projektverzeichnis in das data verzeichnis
     # mit / können wir Pfade kombinieren
-OUTPUT_DIR = BASE_DIR / "output"
+AUSGABE_DIR = BASE_DIR / "Ausgabe"
     # OUTPUT_DIR ist der Pfad zum Verzeichnis, in dem die generierten PDFs gespeichert werden
     # wir gehen aus dem projektverzeichnis in das output verzeichnis
 
 # CSV datei
-INPUT_CSV_PATH = DATA_DIR / "export.csv"
-    # lokal z.b. so gespeichert "C:\Users\agnie\Downloads\export.csv"
+INPUT_CSV_PATH = DATEI_DIR / "export.csv"
 
-# Benötigte CSV Spalten als Liste
-REQUIRED_COLUMNS = [
+# Verwendete CSV Spalten als Liste
+usedSpalten = [
     "id_patient",
     "questionnaire_title",
     "questionnaire_question",
     "questionnaire_answer_date",
     "questionnaire_answer_value",
     "questionnaire_reply_status",
-    "questionnaire_answer_type"
-]
+    "questionnaire_answer_type"]
 
 # Zu verarbeitende Fragebögen (so wie es in CSV steht)
-RELEVANT_QUESTIONNAIRES = [
+relevantQuestionnaires = [
     "FACIT-Erschöpfung",
     "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
     "OMDQ",
-    "Übelkeit/Erbrechen"
-]
+    "Übelkeit/Erbrechen"]
 
 # In einem Dictionary speichern wir die keys der Fragebögen
-QUESTIONNAIRES = {
+questionnaires = {
     "facit": "FACIT-Erschöpfung",
     "pgsga": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
     "omdq": "OMDQ",
-    "uebelkeit": "Übelkeit/Erbrechen"
-}
-
-'''# FACIT-Fatigue title and cutoff score
-FACIT_TITLE  = "FACIT-Erschöpfung"
-FACIT_CUTOFF = 26 '''
+    "uebelkeit": "Übelkeit/Erbrechen"}
 
 # Anzahl der Punkte im Graphen die wir maximal anzeigen wollen
-MAX_POINTS = 8
+GraphPunkteAnzahl = 8
