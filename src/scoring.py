@@ -71,4 +71,23 @@ def uebelkeitScoreCalculator(session):
 					return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":3}
 	return None
 
-			
+
+# Facit Score Funktion:
+def facitScoreCalculator(session):
+	amountAnsweredQuestions = session["answers"].len()
+	sum = 0
+	for a in session["answers"]:
+		if a in facitCalcQuestions:
+			sum = sum + 4 - a["value"]
+		elif a in facitDirectQuestions:
+			sum = sum + a["value"]
+
+	if amountAnsweredQuestions < 13:
+		sum = (sum * 13)/amountAnsweredQuestions
+
+	return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":sum}
+
+
+# PGSGA Score Funktion:
+def pgsgaScoreCalculator(session):
+	
