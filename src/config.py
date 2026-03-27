@@ -61,9 +61,3 @@ FACIT_CUTOFF = 26 '''
 
 # Anzahl der Punkte im Graphen die wir maximal anzeigen wollen
 MAX_POINTS = 8
-
-
-
-
-
-
