@@ -18,3 +18,5 @@ env/
 
 # Generated output
 output/
+
+.vscode/settings.json

@@ -49,6 +49,26 @@ omdqMainQuestions = [
 omdqOptionalQuestions = ["3. Wie stark schränkte Sie der Mund- und Rachenschmerz in den letzten 24 Stunden bei den folgenden Tätigkeiten ein?"]
 
 
+# Die Oberfunktion berrechnet für jede Session einen Score, pflegt für jeden Patienten eine scoreliste für jeden Fragebogen (Datum dabei), dabei wird beachtet, dass maximal GraphPunkteAnzahl scores in der Liste sein dürfen
 
+# jetzt kommen die ganzen Berechnungsfunktionen dran
 
+# Jede Score Funktion kriegt eine Session
 
+# Übelkeit & Erbrechen Funktion:
+def uebelkeitScoreCalculator(session):
+	if session["questionnaire_title"] == "Übelkeit/Erbrechen":
+		answers = session["answers"]
+		for a in answers:
+			if a["question_title"] in uebelkeitQuestions: # nur wenn es die eine frage ist
+				if (a["value"] == "keinErbrechen"):
+					return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":0}
+				elif (a["value"] == "12XProTag"):
+					return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":1}
+				elif (a["value"] == "35XProTag"):
+					return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":2}
+				elif (a["value"] == "6XProTag"): #gibt es in csv export noch nicht also nehmen wir an der value heißt so
+					return {"id_patient":session["id_patient"],"questionnaire_title":session["questionnaire_title"],"date":session["date"], "score":3}
+	return None
+
+			

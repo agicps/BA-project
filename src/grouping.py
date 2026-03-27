@@ -36,32 +36,43 @@ def group_responses(csv_df):
     # gruppiert nach Patient, Fragebogen und Tag
     # jede Ausfüllung ist ein Dictionary mit daten zur Ausfüllung 
     # und einer answers-Liste, die einzelne Fragebeantwortungen als Dictionaries enthält.
-    complete_forms = [] 
+    alleAntworten = [] 
 
     # wir iterieren über die Gruppen
     for (id_patient, questionnaire_title, answer_day), group in groups:
-        answers = []
+        sessionAntworten = []
         # wir iterieren über die Zeilen der Gruppe, um die Antworten zu sammeln
         # iterrows gibt uns zeilen zurück
         # mit jedem Durchlauf bauen wir für eine Antwortzeile ein Dictionary
         for index, row in group.iterrows():
-            answer = {
-                "question": row["questionnaire_question"],
+            antwort = {
+                "question_title": row["questionnaire_question"],
                 "value": row["questionnaire_answer_value"],
                 "type": row["questionnaire_answer_type"],
                 "reply_status": row["questionnaire_reply_status"],
             }
-            answers.append(answer)
+            sessionAntworten.append(antwort)
         
 
-        complete_forms.append(
+        alleAntworten.append(
             # hier ist jeweils eine Ausfüllung
             {
                 "id_patient": id_patient,
                 "questionnaire_title": questionnaire_title,
                 "date": answer_day,
-                "answers": answers,
+                "answers": sessionAntworten,
             }
         )
 
-    return complete_forms
+    return alleAntworten
+
+# also wir geben die csv data frame ein, dann gruppieren wir über die Spalten patient,fragebogentitel und Tag 
+# d.h. jede Gruppe hat eindeutige Werte für Patient, Fragebogen, Titel
+# und jede Gruppe ist eine Teiltabelle, die diesen Werten entspricht
+# dann teilen wir das dataframe (d.h. die Teiltabelle) in zeilen auf mit iterrows
+# bzw. wir iterieren damit durch die zeilen des dataframes
+# und für jede Zeile erstellen wir eine Antwort Dictionary(antwort), die für jede Antwort der Gruppe Informationen speichert die wir später fürs scoring brauchen
+# die antworten (in Form von dictionnaires) zu einer Ausfüllung speichern wir dann in einer Liste (sessionAntworten)
+# dann fügen wir die Sammlung der Antworten und die Daten dieser Gruppe zu einer großen Liste(alleAntworten) hinzu.
+# # in der Liste speichern wir dann immer eine Ausfüllung (die annahme war ja das ein Fragebögen max. einmal täglich ausgefüllt werden kann)
+# und dort können wir nach Patient, Fragebogen und Datum identifizieren, und dann haben wir dazu jeweils zugriff auf die gespeicherten Antworten 
