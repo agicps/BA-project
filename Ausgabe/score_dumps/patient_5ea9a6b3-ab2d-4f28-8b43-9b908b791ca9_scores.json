@@ -1,0 +1,160 @@
+{
+  "FACIT-Erschöpfung": [
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2025-11-11",
+      "score": 30
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2025-12-16",
+      "score": 19
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2025-12-18",
+      "score": 24
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2026-02-11",
+      "score": 8
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2026-02-18",
+      "score": 0
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2026-02-25",
+      "score": 44
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "FACIT-Erschöpfung",
+      "date": "2026-03-04",
+      "score": 35
+    }
+  ],
+  "OMDQ": [
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "OMDQ",
+      "date": "2025-11-11",
+      "score": 1.62
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "OMDQ",
+      "date": "2026-02-11",
+      "score": 1.25
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "OMDQ",
+      "date": "2026-02-18",
+      "score": 2.5
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "OMDQ",
+      "date": "2026-02-25",
+      "score": 3.75
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "OMDQ",
+      "date": "2026-03-04",
+      "score": 1.5
+    }
+  ],
+  "PG-SGA SF | Patientenbezogenes Ernährungsassesment": [
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
+      "date": "2025-11-11",
+      "score": 0
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
+      "date": "2025-12-16",
+      "score": 21
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
+      "date": "2026-02-11",
+      "score": 0
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
+      "date": "2026-02-18",
+      "score": 5
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
+      "date": "2026-02-25",
+      "score": 9
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "PG-SGA SF | Patientenbezogenes Ernährungsassesment",
+      "date": "2026-03-04",
+      "score": 3
+    }
+  ],
+  "Übelkeit/Erbrechen": [
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2025-11-11",
+      "score": 1
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2025-12-16",
+      "score": 1
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2026-01-04",
+      "score": 1
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2026-01-11",
+      "score": 2
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2026-01-18",
+      "score": 1
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2026-01-25",
+      "score": 0
+    },
+    {
+      "id_patient": "5ea9a6b3-ab2d-4f28-8b43-9b908b791ca9",
+      "questionnaire_title": "Übelkeit/Erbrechen",
+      "date": "2026-02-01",
+      "score": 2
+    }
+  ]
+}

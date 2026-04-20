@@ -18,5 +18,3 @@ def load_csv(csv_path, required_columns):
     df["answer_day"] = df["questionnaire_answer_date"].dt.date
 
     return df
-
-

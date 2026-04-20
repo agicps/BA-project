@@ -3,7 +3,7 @@ import pandas as pd
 # also wir bündeln einzelne Antworten zu einer zusammenhängenden Ausfüllung eines Fragebogens
 # mit diesen Bündelungen können später die Scores berechnet werden
 
-# eine Ausfüllung wird definiert durch:
+# eine Ausfüllung wird bei mir definiert durch:
     # id_patient
     # questionnaire_title
     # das Datum (hier beachten wir nur den Tag)
@@ -23,13 +23,17 @@ def filter_relevante_zeilen(csv_df, relevant_questionnaires):
     return filtered_df
 
 
+def filter_relevant_rows(csv_df, relevant_questionnaires):
+    return filter_relevante_zeilen(csv_df, relevant_questionnaires)
+
+
 
 # diese Funktion macht aus den einzelnen Antwortzeilen(eines DataFrames) eine zusammenhängende Ausfüllung (pro Tag)
 def group_responses(csv_df):
 
     # wir gruppieren den dataframe nach Patient, Fragebogen und Tag
     groups = csv_df.groupby(["id_patient", "questionnaire_title", "answer_day"])
-    # mit groupby bekommt man den Gruppenschlüssel also (id_patient, questionnaire_title, answer_day) 
+    # mit groupby bekommt man dann den Gruppenschlüssel also (id_patient, questionnaire_title, answer_day) 
     # und die zugehörige Teiltabelle(group) (also die Zeilen die zu diesem Schlüssel gehören)
 
     # hier speichern wir die fertigen Ausfüllungen

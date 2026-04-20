@@ -26,6 +26,8 @@ AUSGABE_DIR = BASE_DIR / "Ausgabe"
 
 # CSV datei
 INPUT_CSV_PATH = DATEI_DIR / "export.csv"
+#BIG_INPUT_CSV_PATH = DATEI_DIR / "export-big.csv"
+PATIENT_DATA_PATH = DATEI_DIR / "digicare_patients.csv"
 
 # Verwendete CSV Spalten als Liste
 usedSpalten = [
@@ -36,6 +38,9 @@ usedSpalten = [
     "questionnaire_answer_value",
     "questionnaire_reply_status",
     "questionnaire_answer_type"]
+
+# Alias für konsistente Imports in main.py
+REQUIRED_COLUMNS = usedSpalten
 
 # Zu verarbeitende Fragebögen (so wie es in CSV steht)
 relevantQuestionnaires = [
