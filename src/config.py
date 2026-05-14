@@ -1,18 +1,16 @@
 from pathlib import Path
+import sys
 # Hier speichern wir alle Daten zum Konfigurieren der Anwendung
 
 
-# Verzeichnisstruktur
-    # generell ist die Struktur vom Projekt wie folgt:
-    # - project
-    #    - ausgabe
-    #       - export.csv
-    #    - output
-    #       - hier sind die generierten PDFs
-    #    - src
-    #       - config.py # hier speichern wir alle Daten zum Konfigurieren der Anwendung
-    #       ...
-BASE_DIR = Path(__file__).parent.parent
+def _resolve_base_dir() -> Path:
+    exe_dir = Path(sys.executable).resolve().parent
+    src_dir = Path(__file__).resolve().parent.parent
+    candidates = [exe_dir, exe_dir.parent, Path.cwd(), Path(getattr(sys, "_MEIPASS", ""))] if getattr(sys, "frozen", False) else [src_dir, Path.cwd()]
+
+    return next((p for p in candidates if (p / "Exportdatei").exists()), candidates[0])
+
+BASE_DIR = _resolve_base_dir()
     # BASIS_DIR ist der Pfad zum Verzeichnis, in dem das Projekt liegt
     # Path(__file__) gibt den Pfad von der aktuellen Datei (also config.py) zurück
     # .parent.parent geht zwei Ebenen hoch, d.h. zum Verzeichnis in dem das Projekt liegt

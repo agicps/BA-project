@@ -20,17 +20,7 @@ HEADER_FONT_SIZE = 18
 HEADER_INFO_FONT_SIZE = 12
 
 def create_plot_image(patient_id, questionnaire_title, score_entries):
-    """
-    Erstellt ein Diagramm (Plot) für einen Fragebogen.
     
-    Parameter:
-        patient_id: Die Patienten-ID
-        questionnaire_title: Der Name vom Fragebogen
-        score_entries: Die Datenpunkte zum Zeichnen
-    
-    Gibt zurück:
-        Ein Matplotlib-Diagramm
-    """
     import plotting
 
     if hasattr(plotting, "create_questionnaire_plot"):
@@ -40,15 +30,8 @@ def create_plot_image(patient_id, questionnaire_title, score_entries):
 
 
 def convert_plot_to_pdf_image(plot_figure):
-    """
-    Wandelt ein Matplotlib-Diagramm in einen Bild um, das ins PDF passt.
-    
-    Parameter:
-        plot_figure: Das Matplotlib-Diagramm
-    
-    Gibt zurück:
-        (Das Bild im PDF-Format, Der Speicheruffer)
-    """
+    # hier wandeln wir ein Matplotlib-Diagramm in einen Bild um, das ins PDF passt.
+
     image_buffer = BytesIO()
     
     plot_figure.savefig(image_buffer, format="png", dpi=150)
@@ -59,19 +42,8 @@ def convert_plot_to_pdf_image(plot_figure):
 
 
 def draw_page_header(pdf_document, patient_id, position_y, patient_data_dict=None):
-    """
-    Zeichnet die Kopfzeile auf die Seite.
-    Kopfzeile = Titel + Patienteninfo oben auf der Seite
+    # hier schreibt man die Kopfzeile, (titel, patientenname oder id)
     
-    Parameter:
-        pdf_document: Das PDF-Dokument zum Zeichnen
-        patient_id: Die Patienten-ID
-        position_y: Die Y-Position (wie weit oben)
-        patient_data_dict: Dictionary mit patient_id -> (firstname, lastname) Mapping
-    
-    Gibt zurück:
-        Die neue Y-Position nach der Kopfzeile
-    """
     pdf_document.setFont("Helvetica-Bold", HEADER_FONT_SIZE)
     pdf_document.drawString(MARGIN_LEFT, position_y, HEADER_TEXT)
     
@@ -86,22 +58,11 @@ def draw_page_header(pdf_document, patient_id, position_y, patient_data_dict=Non
     
     pdf_document.drawString(MARGIN_LEFT, info_position_y, f"Patient: {patient_display}")
     
-    return info_position_y - 18
+    return info_position_y - 18 #gibt position zurück
 
 
 def get_questionnaires_in_order(questionnaire_list):
-    """
-    Sortiert die Fragebögen in der richtigen Reihenfolge.
-    
-    Zuerst: Die Fragebögen aus der Konfiguration (in dieser Reihenfolge)
-    Dann: Alle anderen Fragebögen (alphabetisch)
-    
-    Parameter:
-        questionnaire_list: Eine Liste aller vorhandenen Fragebogennamen
-    
-    Gibt zurück:
-        Die sortierte Liste
-    """
+    # wir sortieren die Fragebögen immer in der selben reihenfolge
     sorted_questionnaires = []
     
     for title in relevantQuestionnaires:
@@ -116,17 +77,7 @@ def get_questionnaires_in_order(questionnaire_list):
 
 
 def calculate_image_size(original_width, original_height):
-    """
-    Berechnet die richtige Größe für das Bild in PDF.
-    Das Bild soll passen aber nicht zu klein sein.
-    
-    Parameter:
-        original_width: Die ursprüngliche Breite von Bild
-        original_height: Die ursprüngliche Höhe von Bild
-    
-    Gibt zurück:
-        (neue_breite, neue_höhe)
-    """
+    # wir berechnen die richtige grö+#ße für das Bild in der PDF
     available_width = PAGE_WIDTH - MARGIN_LEFT - MARGIN_RIGHT
     
     scale_for_width = available_width / original_width
@@ -139,22 +90,8 @@ def calculate_image_size(original_width, original_height):
     
     return new_width, new_height
 
-
-# ===== HAUPTFUNKTION =====
-
 def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_data_dict=None):
-    """
-    Erstellt ein PDF mit den Fragebogenergebnissen eines Patienten.
-    
-    Parameter:
-        patient_id: Die eindeutige Patienten-ID
-        questionnaire_scores: Ein Dictionary mit allen Fragebogenergebnissen
-        output_dir: Der Pfad, wo das PDF gespeichert werden soll
-        patient_data_dict: Dictionary mit patient_id -> (firstname, lastname) Mapping
-    
-    Gibt zurück:
-        Der Pfad zur erstellten PDF-Datei
-    """
+    # wir erstellen eine PDF mit den CSV daten eines patienten, bzw. den ausfüllungen
     output_path = Path(output_dir)
     
     output_path.mkdir(parents=True, exist_ok=True)
@@ -173,7 +110,7 @@ def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_dat
     
     ordered_questionnaire_names = get_questionnaires_in_order(all_questionnaire_names)
     
-    # ===== ERSTELLE FÜR JEDEN FRAGEBOGEN EIN DIAGRAMM =====
+    # für jeden Fragebogen ein Diagramm
     
     for questionnaire_name in ordered_questionnaire_names:
         score_data = questionnaire_scores[questionnaire_name]
@@ -181,7 +118,7 @@ def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_dat
         if not score_data:
             continue
         
-        # ===== ERSTELLE DAS DIAGRAMM =====
+        # erstellung vom Diagrammm
         
         plot_figure = create_plot_image(patient_id, questionnaire_name, score_data)
         
@@ -194,7 +131,7 @@ def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_dat
             image_original_height
         )
         
-        # ===== ÜBERPRÜFEN, OB EINE NEUE SEITE NÖTIG IST =====
+        # brauchen wr eine neue seite?
         
         required_space = image_new_height + SPACE_BETWEEN_CHARTS
         
@@ -203,7 +140,7 @@ def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_dat
             current_position_y = PAGE_HEIGHT - MARGIN_TOP
             current_position_y = draw_page_header(pdf, patient_id, current_position_y, patient_data_dict)
         
-        # ===== ZEICHNE DAS BILD INS PDF =====
+        # bild wird in die pdf gezeichnet
         
         image_position_x = MARGIN_LEFT + (content_width - image_new_width) / 2
         
@@ -219,7 +156,7 @@ def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_dat
             mask="auto",
         )
         
-        # ===== SPEICHERPLATZ FREIGEBEN UND POSITION AKTUALISIEREN =====
+        # speicherplatz frei und dann die position aktualisiert
         
         plt.close(plot_figure)
         
@@ -227,7 +164,7 @@ def create_patient_pdf(patient_id, questionnaire_scores, output_dir, patient_dat
         
         current_position_y = image_position_y - SPACE_BETWEEN_CHARTS
     
-    # ===== SPEICHERE DAS PDF =====
+    # pdf wird gespeichert
     
     pdf.save()
     

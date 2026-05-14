@@ -14,7 +14,10 @@ def create_line_chart(
 	output_path,
 	max_points=8,
 ):
-	sorted_points = sorted(messpunkte, key=lambda point: point["date"])
+	def get_point_date(point):
+		return _parse_entry_date(point["date"])
+	
+	sorted_points = sorted(messpunkte, key=get_point_date)
 
 	if len(sorted_points) > max_points:
 		sorted_points = sorted_points[-max_points:]
@@ -179,7 +182,11 @@ def _parse_entry_date(date_value):
 	return date_value
 
 
-def _get_y_axis_settings(questionnaire_title):
+def _sort_entry_by_date(entry):
+	return _parse_entry_date(entry["date"])
+
+
+def _y_achsen_einstellung(questionnaire_title):
 	if questionnaire_title == "FACIT-Erschöpfung":
 		return 0, 52
 	if questionnaire_title == "PG-SGA SF | Patientenbezogenes Ernährungsassesment":
@@ -198,7 +205,7 @@ def _get_plot_size(questionnaire_title):
 
 
 def plot_patient_questionnaire_scores(patient_id, questionnaire_title, score_entries):
-	sorted_entries = sorted(score_entries, key=lambda entry: _parse_entry_date(entry["date"]))
+	sorted_entries = sorted(score_entries, key=_sort_entry_by_date)
 	if len(sorted_entries) > 8:
 		sorted_entries = sorted_entries[-8:]
 
@@ -213,7 +220,7 @@ def plot_patient_questionnaire_scores(patient_id, questionnaire_title, score_ent
 	ax.set_title(get_questionnaire_plot_title(questionnaire_title), fontsize=16)
 	ax.set_xlabel("")
 	ax.set_ylabel("Score")
-	y_min, y_max = _get_y_axis_settings(questionnaire_title)
+	y_min, y_max = _y_achsen_einstellung(questionnaire_title)
 	ax.set_ylim(y_min, y_max)
 	ax.set_yticks(list(range(y_min, y_max + 1, 2)))
 	ax.set_xticks(x_values)
@@ -255,12 +262,12 @@ def plot_patient_questionnaire_scores(patient_id, questionnaire_title, score_ent
 		color=interpretation["color"],
 	)
 
-	text_transform = blended_transform_factory(ax.transAxes, ax.transData)
+	text_transformierung = blended_transform_factory(ax.transAxes, ax.transData)
 	ax.text(
 		1.01,
 		interpretation["cutoff"],
 		interpretation["text"],
-		transform=text_transform,
+		transform=text_transformierung,
 		va="center",
 		ha="left",
 		fontsize=9,

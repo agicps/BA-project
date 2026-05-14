@@ -1,10 +1,8 @@
 from config import INPUT_CSV_PATH, PATIENT_DATA_PATH, REQUIRED_COLUMNS, relevantQuestionnaires, AUSGABE_DIR
-from csv_reader import load_csv
+from csv_reader import load_csv, load_patient_data
 from grouping import filter_relevant_rows, group_responses
 from scoring import mainScoreCalculator
 from pdf_generator import create_patient_pdf
-from score_util import save_patient_scores_to_json
-from patient_data import load_patient_data
 
 
 def main():
@@ -16,7 +14,6 @@ def main():
     patient_data_dict = load_patient_data(PATIENT_DATA_PATH)
 
     for patient_id, questionnaire_scores in patient_scores.items():
-        save_patient_scores_to_json(patient_id, questionnaire_scores, AUSGABE_DIR)
         create_patient_pdf(patient_id, questionnaire_scores, AUSGABE_DIR, patient_data_dict)
 
 

@@ -261,16 +261,19 @@ def facitRelevantChange(facitScoreList):
 
 		return dateValue
 
-	sortedEntries = sorted(facitScoreList, key=lambda entry: parseDate(entry["date"]))
+	def get_date(entry):
+		return parseDate(entry["date"])
+
+	sortedEntries = sorted(facitScoreList, key=get_date)
 	earliestScore = sortedEntries[0]["score"]
 	latestScore = sortedEntries[-1]["score"]
-	delta = latestScore - earliestScore
+	differenz = latestScore - earliestScore
 
-	if delta >= 8:
+	if differenz >= 8:
 		return "Clinically meaningful improvement"
-	if 5 <= delta < 8:
+	if 5 <= differenz < 8:
 		return "Possible improvement"
-	if delta <= -5:
+	if differenz <= -5:
 		return "Worsening"
 	return "No relevant change"
 	
